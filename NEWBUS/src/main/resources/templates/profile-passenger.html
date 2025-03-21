@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Passenger Profile | ZenBus</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins|Audiowide|Sofia&display=swap">
+
+  <style>
+    /* Background */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #ffe0b2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Profile Container */
+    .profile-container {
+        width: 100%;
+        max-width: 600px;
+        padding: 25px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header */
+    .header {
+        font-family: "Audiowide", sans-serif;
+        color: #007bff;
+        font-size: 26px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Profile Table */
+    .profile-table {
+        width: 100%;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-table th, .profile-table td {
+        padding: 12px;
+        text-align: left; /* Left-aligned data */
+    }
+
+    .profile-table th {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        width: 40%;
+    }
+
+    .profile-table td {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Back to Dashboard Button (Full Width) */
+    .btn-secondary {
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%; /* Full-width button */
+        text-align: center;
+        background: linear-gradient(135deg, #757575, #424242);
+        color: white;
+        border: none;
+        transition: 0.3s ease-in-out;
+        display: block;
+        margin-top: 20px;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #424242, #212121);
+        transform: scale(1.03);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .header {
+            font-size: 22px;
+        }
+        .profile-table th, .profile-table td {
+            font-size: 14px;
+            padding: 10px;
+        }
+        .btn-secondary {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="profile-container">
+  <div class="header">
+    <i class="fas fa-user"></i> Passenger Profile
+  </div>
+
+  <!-- Profile Table -->
+  <table class="table profile-table">
+    <tr>
+      <th>Passenger ID</th>
+      <td th:text="${passenger.id}"></td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td th:text="${passenger.name}"></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td th:text="${passenger.email}"></td>
+    </tr>
+    <tr>
+      <th>Phone</th>
+      <td th:text="${passenger.phoneNumber}"></td>
+    </tr>
+    <tr>
+      <th>Age</th>
+      <td th:text="${passenger.age}"></td>
+    </tr>
+    <tr>
+      <th>Gender</th>
+      <td th:text="${passenger.gender}"></td>
+    </tr>
+  </table>
+
+  <!-- Back to Dashboard Button (Full Width) -->
+  <a href="/passenger/dashboard" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+</div>
+
+</body>
+</html>

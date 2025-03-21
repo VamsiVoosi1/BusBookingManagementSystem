@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation | ZenBus</title>
+
+    <!-- Bootstrap & Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins|Audiowide|Sofia&display=swap">
+
+    <style>
+        /* Background */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffe0b2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+
+        /* Main Container */
+        .container-box {
+            width: 100%;
+            max-width: 900px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Headers */
+        .header {
+            font-family: "Audiowide", sans-serif;
+            color: #007bff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Booking ID (Blinking) */
+        .booking-id {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff5722;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Bus Details Section */
+        .bus-details {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .bus-details p {
+            font-weight: 500;
+        }
+
+        /* Passenger Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .table td {
+            font-weight: 500;
+        }
+
+        /* Total Price */
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+
+        /* Button Group */
+        .button-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .btn-primary {
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #003580);
+            transform: scale(1.05);
+        }
+
+        /* Success Message (Fixed Positioning) */
+        .success-message {
+            display: none;
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+            position: absolute;
+            top: 100%; /* Ensures the message appears below the button */
+            left: 0;
+            right: 0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header {
+                font-size: 20px;
+            }
+            .booking-id {
+                font-size: 18px;
+            }
+            .table th, .table td {
+                font-size: 14px;
+            }
+            .btn-primary {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-box">
+    <div class="header">
+        <i class="fas fa-check-circle"></i> Booking Confirmation
+    </div>
+
+    <!-- Blinking Booking ID -->
+    <p class="booking-id"><strong>Booking ID:</strong> <span th:text="${bookingId}"></span></p>
+
+    <!-- Bus Details -->
+    <div class="bus-details">
+        <h3><i class="fas fa-bus"></i> Bus Details</h3>
+        <p><strong>Travels Name:</strong> <span th:text="${bus.travelsName}"></span></p>
+        <p><strong>From:</strong> <span th:text="${bus.fromLocation}"></span> → <strong>To:</strong> <span th:text="${bus.toLocation}"></span></p>
+        <p><strong>Departure:</strong> <span th:text="${bus.departureTime}"></span> | <strong>Arrival:</strong> <span th:text="${bus.arrivalTime}"></span></p>
+        <p><strong>Price Per Seat:</strong> ₹<span th:text="${bus.pricePerSeat}"></span></p>
+    </div>
+
+    <!-- Passenger Details -->
+    <h3><i class="fas fa-user"></i> Passenger Details</h3>
+    <div class="table-container">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Seat Number</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="passenger, index : ${passengerList}">
+                <td th:text="${seatNumbers[index.index]}"></td>
+                <td th:text="${passenger}"></td>
+                <td th:text="${passengerAges[index.index]}"></td>
+                <td th:text="${passengerGenders[index.index]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total Price -->
+    <p class="total-price">Total Price: ₹<span th:text="${totalPrice}"></span></p>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <form action="/booking/generate-ticket" method="post" onsubmit="showSuccessMessage(event)">
+            <input type="hidden" name="bookingId" th:value="${bookingId}" />
+            <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Download Ticket</button>
+            <p id="success-message" class="success-message">Ticket downloaded and sent to your registered email ID.</p>
+        </form>
+        <a href="/passenger/history" class="btn btn-primary"><i class="fas fa-history"></i> Booking History</a>
+    </div>
+</div>
+
+<!-- JavaScript for Showing Success Message -->
+<script>
+    function showSuccessMessage(event) {
+        event.preventDefault();
+        document.getElementById("success-message").style.display = "block";
+        setTimeout(() => {
+            event.target.submit();
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>

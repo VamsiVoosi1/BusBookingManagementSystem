@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Bus Booking System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Soft Gradient Background */
+        body {
+            background: linear-gradient(135deg, #d9e7ff, #fde6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Login Card */
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(15px);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        /* Form Label Styling */
+        .form-label {
+            text-align: left;
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Left Side - Bus Image */
+        .login-image {
+            width: 50%;
+            background: url('/LOGINBUS.jpg') no-repeat center center/cover;
+            opacity: 0.6;
+        }
+
+        /* Right Side - Form */
+        .login-form {
+            width: 50%;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Admin Icon */
+        .admin-icon {
+            font-size: 55px;
+            color: white;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            padding: 18px;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(0, 123, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        /* Login Title */
+        .login-form h3 {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        /* Input Fields */
+        .form-control {
+            border-radius: 8px;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control:focus {
+            border: 2px solid #007bff;
+            box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Glowing Login Button */
+        .btn-primary {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #003580);
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.6);
+        }
+
+        /* Register Button */
+        .btn-outline-secondary {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9966, #ff7733);
+            border: none;
+            color: white;
+            box-shadow: 0px 4px 12px rgba(255, 153, 102, 0.4);
+        }
+
+        .btn-outline-secondary:hover {
+            background: linear-gradient(135deg, #ff7733, #ff5500);
+            transform: scale(1.05);
+        }
+
+        .register-link {
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 800px;
+                padding: 20px;
+            }
+            .login-image {
+                width: 100%;
+                height: 200px;
+            }
+            .login-form {
+                width: 100%;
+            }
+        }
+
+        /* Back Button Styling */
+        .back-btn-container {
+            margin-top: 15px;
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            color: black;
+            box-shadow: 0px 4px 12px rgba(153, 242, 200, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(153, 242, 200, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Left Side Image -->
+    <div class="login-image"></div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-form">
+        <i class="fa-solid fa-user-shield admin-icon"></i>
+        <h3>Admin Login</h3>
+
+        <!-- Display login error message if present -->
+        <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+
+        <form th:action="@{/admin/loginWithEmailAndPassword}" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label"><b>Email</b></label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label"><b>Password</b></label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <div class="register-link">
+            <label><b>Don't have an account?</b></label>
+            <a href="/admin/adminregistration" class="btn btn-outline-secondary w-100">Register</a>
+        </div>
+
+        <!-- Back button inside login card -->
+        <div class="back-btn-container">
+            <a href="/passenger/home" class="back-btn w-100"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

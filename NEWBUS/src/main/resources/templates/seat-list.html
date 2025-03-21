@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seat List - ZenBus</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand|Oswald|Poppins&display=swap">
+
+    <style>
+        /* Background */
+        body {
+            background: linear-gradient(135deg, #e0f7fa, #ffe0b2);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+                overflow: hidden; /* Prevents scrolling */
+
+        }
+
+.container-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    width: 600px;
+    text-align: center;
+    max-width: 90%; /* Ensures responsiveness */
+
+    /* Fix for content cutting off */
+    max-height: 90vh;
+    overflow-y: auto;
+
+    /* Centering the Container */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+
+        /* Title */
+        .header {
+            font-family: "Oswald", sans-serif;
+            color: #007bff;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header i {
+            color: #007bff;
+        }
+
+        /* Table Styling */
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .table {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #007bff;
+        }
+
+        .table thead {
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: white;
+            font-size: 16px;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 10px; /* Reduced padding */
+        }
+
+        .table tbody tr {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .table tbody tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Buttons */
+        .btn-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Small gap between buttons */
+        }
+
+        .btn-primary {
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 12px;
+            width: 48%; /* Make buttons fit table */
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            text-decoration: none !important;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #003580);
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container-box">
+    <!-- Title with Icon -->
+    <div class="header">
+        <i class="fas fa-chair"></i> Seat List for Bus
+    </div>
+
+    <div class="table-container">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Seat Number</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="seat : ${seats}">
+                <td th:text="${seat.seatNumber}"></td>
+                <td>
+                <span th:text="${seat.isBooked} ? 'Booked' : 'Available'"
+                      th:classappend="${seat.isBooked} ? 'text-danger font-weight-bold' : 'text-dark font-weight-bold'">
+                </span>
+
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Buttons with Same Width as Table -->
+    <div class="btn-container">
+        <a th:href="@{/seat/add(busId=${busId})}" class="btn btn-primary"><i class="fas fa-plus"></i> Add More Seats</a>
+        <a href="/bus/list" class="btn btn-primary"><i class="fas fa-home"></i> Back to List</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
