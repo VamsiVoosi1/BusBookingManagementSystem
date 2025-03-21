@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking,Long> {
-    // ✅ Fetch a Booking along with its Passengers
     @EntityGraph(attributePaths = {"passengers"})
     Optional<Booking> findById(Long id);
 

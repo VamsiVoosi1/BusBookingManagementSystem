@@ -20,12 +20,6 @@ public class BusController {
     private BusService busService;
 @Autowired
     private SeatService seatService;
-//@Autowired
-//    public BusController(BusService busService,SeatService seatService) {
-//        this.busService = busService;
-//        this.seatService=seatService;
-//    }
-
     @GetMapping("/add")
     public String showAddBusForm(Model model) {
         model.addAttribute("bus", new Bus());
@@ -65,31 +59,27 @@ public class BusController {
     }
     @GetMapping("/book-seats")
     public String bookSeats(@RequestParam("busId") Long busId, HttpSession session, Model model) {
-        // ✅ Retrieve logged-in passenger email from session
         String passengerEmail = (String) session.getAttribute("loggedInUser");
 
 
         if (passengerEmail == null) {
-            System.out.println("🚨 Error: No passenger logged in!");
+            System.out.println(" Error: No passenger logged in!");
             return "redirect:/passenger/login"; // Redirect to login if session is empty
         }
 
-        System.out.println("✅ Passenger Email from session: " + passengerEmail);
+        System.out.println("Passenger Email from session: " + passengerEmail);
 
-        // ✅ Fetch Bus Details
         Bus bus = busService.getBusById(busId);
         if (bus == null) {
             throw new RuntimeException("Bus not found!");
         }
 
-        // ✅ Fetch Available Seats
         List<Seat> seats = seatService.getSeatsByBusId(busId);
 
-        // ✅ Add attributes to model
         model.addAttribute("bus", bus);
         model.addAttribute("seats", seats);
-        model.addAttribute("passengerEmail", passengerEmail); // ✅ Add Email to Model
+        model.addAttribute("passengerEmail", passengerEmail);
 
-        return "seat-selection"; // ✅ Render seat-selection.html
+        return "seat-selection";
     }
 }

@@ -20,21 +20,21 @@ public class Passenger {
     private String name;
     private int age;
     private String gender;
-    private String email; // ✅ Email of passenger
+    private String email;
     private String phoneNumber;
-    private String password; // Consider encrypting this field
+    private String password;
 
-    private String seatNumber; // ✅ Store seat number assigned to this passenger
+    private String seatNumber;
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
-    private Booking booking; // ✅ Associate passengers with a booking
+    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "bus_id")
-    private Bus bus; // ✅ Associate passengers with a bus
+    private Bus bus;
 
     @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id", unique = true) // ✅ Link to Seat
+    @JoinColumn(name = "seat_id", referencedColumnName = "id", unique = true)
     private Seat seat;
 }

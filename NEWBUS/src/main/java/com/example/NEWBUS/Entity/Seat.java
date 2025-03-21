@@ -16,16 +16,16 @@ public class Seat {
     private Long id;
 //    @Column(nullable = false)
     private String seatNumber;
-    private boolean booked = false; // ✅ Track booking status
+    private boolean booked = false;
 
     @ManyToOne
     @JoinColumn(name = "bus_id", nullable = false)
-    private Bus bus; // ✅ Ensure each seat belongs to a bus
+    private Bus bus;
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
-    private Booking booking;  // ✅ Store Booking ID for seat reservation
+    private Booking booking;
 
-    @OneToOne(mappedBy = "seat") // ✅ Link to Passenger (Bidirectional)
+    @OneToOne(mappedBy = "seat")
     private Passenger passenger;
 }

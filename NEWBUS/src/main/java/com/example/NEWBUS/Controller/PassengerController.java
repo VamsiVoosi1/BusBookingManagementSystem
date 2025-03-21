@@ -57,18 +57,17 @@ public class PassengerController {
 
     @GetMapping("/passengerlogin")
     public String showPassengerHome(HttpSession session, Model model) {
-        // ✅ Retrieve logged-in passenger from session
         Passenger passenger = (Passenger) session.getAttribute("loggedInPassenger");
-        System.out.println("✅ Passenger in session: " + (passenger != null ? passenger.getId() : "No passenger found!"));
+        System.out.println("Passenger in session: " + (passenger != null ? passenger.getId() : "No passenger found!"));
 
 
         if (passenger == null) {
-            System.out.println("🚨 No passenger found in session. Redirecting to login.");
-            return "redirect:/passenger/login"; // Redirect to login if not logged in
+            System.out.println("No passenger found in session. Redirecting to login.");
+            return "redirect:/passenger/login";
         }
-        System.out.println("✅ Passenger in session: " + passenger.getId() + " | " + passenger.getEmail());
-        model.addAttribute("passenger", passenger); // ✅ Pass passenger object to Thymeleaf
-        return "home-passenger"; // ✅ Render home-passenger.html
+        System.out.println("Passenger in session: " + passenger.getId() + " | " + passenger.getEmail());
+        model.addAttribute("passenger", passenger);
+        return "home-passenger";
     }
 
 
@@ -89,7 +88,7 @@ public class PassengerController {
             return "register-passenger";
         }
         passengerService.savePassenger(passengerDto);
-        return "redirect:/passenger/login"; // Redirect to login
+        return "redirect:/passenger/login";
     }
     @PostMapping("/loginWithEmailAndPassword")
     public String login(@RequestParam("email") String email,
@@ -98,23 +97,21 @@ public class PassengerController {
                         HttpSession session) {
 
         if (passengerService.authenticate(email, password)) {
-            // ✅ Fetch Passenger from Database
             Optional<Passenger> optionalPassenger = passengerRepository.findByEmail(email);
             if (optionalPassenger.isEmpty()) {
-                System.out.println("🚨 Error: No passenger found for email: " + email);
+                System.out.println(" Error: No passenger found for email: " + email);
                 model.addAttribute("error", "No passenger found with this email.");
                 return "login-passenger";
             }
 
             Passenger passenger = optionalPassenger.get();
 
-            // ✅ Store Passenger ID & Email in Session
-            session.setAttribute("loggedInPassenger", passenger); // ✅ Store Passenger Object
-            session.setAttribute("loggedInPassengerId", passenger.getId());  // ✅ Store Passenger ID
-            session.setAttribute("loggedInUser", email); // ✅ Store Email
+            session.setAttribute("loggedInPassenger", passenger);
+            session.setAttribute("loggedInPassengerId", passenger.getId());
+            session.setAttribute("loggedInUser", email);
 
-            System.out.println("✅ Logged-in Passenger Stored in Session: " + passenger.getName());
-            return "redirect:/passenger/passengerlogin"; // Redirect after login
+            System.out.println(" Logged-in Passenger Stored in Session: " + passenger.getName());
+            return "redirect:/passenger/passengerlogin";
         } else {
             model.addAttribute("error", "Invalid email or password");
             return "login-passenger";
@@ -122,15 +119,13 @@ public class PassengerController {
     }
     @GetMapping("/history")
     public String bookingHistory(HttpSession session, Model model) {
-        // ✅ Retrieve Passenger from Session
         Passenger passenger = (Passenger) session.getAttribute("loggedInPassenger");
 
         if (passenger == null) {
-            System.out.println("🚨 No passenger found in session. Redirecting to login.");
+            System.out.println(" No passenger found in session. Redirecting to login.");
             return "redirect:/passenger/login"; // Redirect to login if not logged in
         }
 
-        // ✅ Fetch Bookings for Passenger
         List<Booking> bookings = bookingService.findByPassengerId(passenger.getId());
         model.addAttribute("bookings", bookings);
 
@@ -138,16 +133,15 @@ public class PassengerController {
     }
     @GetMapping("/profile")
     public String viewProfile(HttpSession session, Model model) {
-        // ✅ Retrieve Passenger from Session
         Passenger passenger = (Passenger) session.getAttribute("loggedInPassenger");
 
         if (passenger == null) {
-            System.out.println("🚨 No passenger found in session. Redirecting to login.");
-            return "redirect:/passenger/login"; // Redirect to login if not logged in
+            System.out.println(" No passenger found in session. Redirecting to login.");
+            return "redirect:/passenger/login";
         }
-        System.out.println("✅ Passenger found in session: " + passenger.getName()); // Debugging
+        System.out.println(" Passenger found in session: " + passenger.getName()); // Debugging
         model.addAttribute("passenger", passenger);
-        return "profile-passenger"; // ✅ Render profile-passenger.html
+        return "profile-passenger";
     }
 
 

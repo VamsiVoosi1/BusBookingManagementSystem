@@ -20,19 +20,19 @@ public class Booking {
     private LocalDate bookingDate;
     private String email;
     private double totalPrice;
-    private String status; // ✅ Status (e.g., "CONFIRMED", "CANCELLED")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "bus_id", nullable = false)
-    private Bus bus; // ✅ Bus for this booking
+    private Bus bus;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Passenger> passengers; // ✅ List of passengers
+    private List<Passenger> passengers;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Seat> seats; // ✅ List of seats booked
+    private List<Seat> seats;
 
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
-    private Passenger passenger; // ✅ Ensure Passenger is linked
+    private Passenger passenger;
 }

@@ -21,17 +21,17 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setTo(recipientEmail);
-            helper.setSubject("🎟️ Your Bus Ticket Confirmation");
+            helper.setSubject(" Your Bus Ticket Confirmation");
             helper.setText("Dear Passenger,\n\nYour bus ticket has been successfully booked. Please find your ticket attached.\n\nThank you!");
 
-            // ✅ Attach PDF
+
             helper.addAttachment("Bus_Ticket.pdf", new ByteArrayResource(pdfBytes));
 
             mailSender.send(message);
-            System.out.println("✅ Ticket Email Sent to: " + recipientEmail);
+            System.out.println("Ticket Email Sent to: " + recipientEmail);
 
         } catch (MessagingException e) {
-            throw new RuntimeException("🚨 Error: Unable to send email!", e);
+            throw new RuntimeException("Error: Unable to send email!", e);
         }
     }
 }

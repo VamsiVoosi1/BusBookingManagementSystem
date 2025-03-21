@@ -24,13 +24,11 @@ public class SeatService {
         Bus bus = busRepository.findById(busId)
                 .orElseThrow(() -> new RuntimeException("Bus not found"));
 
-        // ✅ Fetch the highest seat number (if no seats exist, start from 0)
         Integer highestSeatNumber = seatRepository.findHighestSeatNumber(busId);
         if (highestSeatNumber == null) {
             highestSeatNumber = 0;
         }
 
-        // ✅ Generate new seat numbers starting from the last highest seat number
         for (int i = 1; i <= seatCount; i++) {
             Seat seat = new Seat();
             seat.setBus(bus);

@@ -25,19 +25,15 @@ public class PDFGeneratorService {
             document.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            // Load Images (Logo & Background)
             PDImageXObject logo = PDImageXObject.createFromFile("src/main/resources/static/ZENBUSLOGO.png", document);
             PDImageXObject flowerBorder = PDImageXObject.createFromFile("src/main/resources/static/PDFBG.jpg", document);
 
-            // Apply Glassmorphism Effect (Background)
             contentStream.setNonStrokingColor(245, 245, 245);
             contentStream.addRect(20, 20, page.getMediaBox().getWidth() - 40, page.getMediaBox().getHeight() - 40);
             contentStream.fill();
 
-            // Draw Border Image
             contentStream.drawImage(flowerBorder, 10, 10, page.getMediaBox().getWidth() - 20, page.getMediaBox().getHeight() - 20);
 
-            // Logo & Title
             contentStream.drawImage(logo, 520, 700, 60, 60);
             contentStream.setFont(PDType1Font.TIMES_BOLD_ITALIC, 20);
             contentStream.setNonStrokingColor(0, 0, 0);
@@ -53,24 +49,18 @@ public class PDFGeneratorService {
             contentStream.showText("ELECTRONIC RESERVATION TICKET");
             contentStream.endText();
 
-            // Set Line Color (Black)
             contentStream.setStrokingColor(0, 0, 0);
-            // Move to Start Position (Left)
             contentStream.moveTo(190, 665); // Adjust Y value to position above "Travel Agency"
-            // Draw Line to Right
             contentStream.lineTo(485, 665); // Adjust width as needed
-            // Stroke the Line (Make it Visible)
             contentStream.setLineWidth(1.5f); // Set thickness
             contentStream.stroke();
 
-            // Travel Details
             contentStream.setFont(PDType1Font.COURIER_BOLD, 16);
             contentStream.beginText();
             contentStream.newLineAtOffset(230, 640);
             contentStream.showText("Travel Agency: " + booking.getBus().getTravelsName());
             contentStream.endText();
 
-            // Booking Info Table
             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
             contentStream.beginText();
             contentStream.newLineAtOffset(180, 600);
@@ -86,28 +76,26 @@ public class PDFGeneratorService {
             contentStream.showText("Arrival: " + booking.getBus().getArrivalTime());
             contentStream.endText();
 
-            // DOJ
+
             contentStream.setFont(PDType1Font.COURIER_BOLD, 14);
             contentStream.beginText();
             contentStream.newLineAtOffset(280, 550);
             contentStream.showText("DOJ: " + booking.getBus().getTravelDate());
             contentStream.endText();
 
-            contentStream.setLineDashPattern(new float[]{10, 3, 3, 3}, 0); // Dash, Space, Dot, Space
+            contentStream.setLineDashPattern(new float[]{10, 3, 3, 3}, 0);
             contentStream.moveTo(180, 540);
             contentStream.lineTo(540, 540);
             contentStream.setLineWidth(2);
             contentStream.stroke();
 
 
-            // Passenger Details
             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
             contentStream.beginText();
             contentStream.newLineAtOffset(140, 500);
             contentStream.showText("Passenger Details:");
             contentStream.endText();
 
-            // Passenger Table
             float startY = 470;
             float rowHeight = 20;
             float[] colWidths = {50, 190, 55, 55, 80};
@@ -122,7 +110,6 @@ public class PDFGeneratorService {
                 contentStream.endText();
                 xOffset += colWidths[i];
             }
-            // Passenger Data Rows
             contentStream.setFont(PDType1Font.HELVETICA, 12);
             float currentY = startY - rowHeight;
             int count = 1;
@@ -167,14 +154,12 @@ public class PDFGeneratorService {
             contentStream.showText("Amount in Words: "+amountInWords);
             contentStream.endText();
 
-            // Footer
             contentStream.setFont(PDType1Font.COURIER_BOLD_OBLIQUE, 22);
             contentStream.beginText();
             contentStream.newLineAtOffset(100, 100);
             contentStream.showText("ZenBus wishes you a Happy Journey!");
             contentStream.endText();
 
-            // Close content stream
             contentStream.close();
             document.save(outputStream);
             return outputStream.toByteArray();
@@ -184,7 +169,6 @@ public class PDFGeneratorService {
         }
     }
 
-    // ✅ Convert Total Price to Words
     private String convertNumberToWords(int number) {
         if (number == 0) return "Zero";
 

@@ -16,9 +16,8 @@ public class PassengerDto {
     private String name;
     private int age;
     private String gender;
-    private String email; // ✅ Email of passenger
+    private String email;
     private String phoneNumber;
-    private String password; // Consider encrypting this field
-    private String seatNumber; // ✅ Store seat number assigned to this passenger
-
+    private String password;
+    private String seatNumber;
 }

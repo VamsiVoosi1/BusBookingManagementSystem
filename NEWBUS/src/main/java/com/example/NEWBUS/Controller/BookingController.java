@@ -45,19 +45,16 @@ public class BookingController {
                            HttpSession session,
                            Model model) {
 
-        // ✅ Retrieve Passenger ID from Session
         Long passengerId = (Long) session.getAttribute("loggedInPassengerId");
         if (passengerId == null) {
-            System.out.println("🚨 Error: Passenger not found in session!");
+            System.out.println("Error: Passenger not found in session!");
             return "redirect:/passenger/passengerlogin"; // Redirect to login page
         }
 
-        // ✅ Retrieve Passenger Email
         String passengerEmail = (String) session.getAttribute("loggedInUser");
-        System.out.println("✅ Passenger ID from session: " + passengerId);
-        System.out.println("✅ Passenger Email from session: " + passengerEmail);
+        System.out.println("Passenger ID from session: " + passengerId);
+        System.out.println("Passenger Email from session: " + passengerEmail);
 
-        // ✅ Convert seat numbers from String to List
         List<String> seatNumbers = Arrays.stream(selectedSeatsStr.split(","))
                 .map(String::trim)
                 .distinct()
@@ -67,7 +64,6 @@ public class BookingController {
             throw new RuntimeException("Mismatch between seat selection and passenger details.");
         }
 
-        // ✅ Fetch Bus
         Bus bookedBus = busService.getBusById(busId);
         if (bookedBus == null) {
             throw new RuntimeException("Bus not found!");
@@ -79,7 +75,7 @@ public class BookingController {
         model.addAttribute("passengerAges", passengerAges);
         model.addAttribute("passengerGenders", passengerGenders);
         model.addAttribute("totalPrice", bookedBus.getPricePerSeat() * seatNumbers.size());
-        model.addAttribute("passengerEmail", passengerEmail); // ✅ Add passenger email to model
+        model.addAttribute("passengerEmail", passengerEmail);
 
         return "checkout";
     }
@@ -93,22 +89,18 @@ public class BookingController {
                                  HttpSession session,
                                  Model model) {
 
-        // ✅ Retrieve Passenger ID from Session
         Long passengerId = (Long) session.getAttribute("loggedInPassengerId");
         if (passengerId == null) {
             return "redirect:/passenger/passengerlogin";
         }
 
-        // ✅ Fetch Bus
         Bus bookedBus = busService.getBusById(busId);
         if (bookedBus == null) {
             throw new RuntimeException("Bus not found!");
         }
 
-        // ✅ Convert Seat Numbers from String to List
         List<String> seatNumbers = Arrays.asList(seatNumbersStr.split(","));
 
-        // ✅ Debugging: Print Received Passenger Data
         System.out.println("🚀 Booking Confirmed! Passenger Data:");
         for (int i = 0; i < seatNumbers.size(); i++) {
             System.out.println("   - Seat: " + seatNumbers.get(i) +
@@ -117,12 +109,9 @@ public class BookingController {
                     " | Gender: " + (i < passengerGenders.size() ? passengerGenders.get(i) : "MISSING"));
         }
 
-        // ✅ Save Booking in Database
         Booking booking = bookingService.saveBooking(passengerId, bookedBus, seatNumbers, passengerNames, passengerAges, passengerGenders, totalPrice);
-        // ✅ Debugging: Print Booking ID
-        System.out.println("🚀 Booking Confirmed! Booking ID: " + booking.getId());
+        System.out.println("Booking Confirmed! Booking ID: " + booking.getId());
 
-        // ✅ Add Data to Model for Next Page
         model.addAttribute("bookingId", booking.getId());
         model.addAttribute("bus", bookedBus);
         model.addAttribute("seatNumbers", seatNumbers);
@@ -131,33 +120,27 @@ public class BookingController {
         model.addAttribute("passengerGenders", passengerGenders);
         model.addAttribute("totalPrice", totalPrice);
 
-        // ✅ Redirect to Booking Confirmation Page
         return "booking-confirmation"; // Create this page next!
     }
     @PostMapping("/generate-ticket")
     public ResponseEntity<byte[]> generateTicket(@RequestParam("bookingId") Long bookingId) {
-        System.out.println("🚀 Received Booking ID: " + bookingId);
+        System.out.println("Received Booking ID: " + bookingId);
 
-        // ✅ Fetch Booking with Passengers
         Booking booking = bookingService.getBookingWithPassengers(bookingId);
         if (booking == null) {
-            throw new RuntimeException("🚨 Error: Booking not found for ID: " + bookingId);
+            throw new RuntimeException(" Error: Booking not found for ID: " + bookingId);
         }
 
-        // ✅ Debugging: Print Passenger Details
-        System.out.println("✅ Booking ID: " + booking.getId());
-        System.out.println("✅ Bus: " + booking.getBus().getTravelsName());
-        System.out.println("✅ Passengers: ");
+        System.out.println("Booking ID: " + booking.getId());
+        System.out.println(" Bus: " + booking.getBus().getTravelsName());
+        System.out.println(" Passengers: ");
         for (Passenger passenger : booking.getPassengers()) {
             System.out.println("   - Name: " + passenger.getName() + " | Seat: " + passenger.getSeatNumber());
         }
-        // ✅ Generate PDF
         byte[] pdfBytes = pdfGeneratorService.generateBookingTicket(booking);
 
-        // ✅ Send Email with Ticket
         emailService.sendBookingConfirmation(booking.getEmail(), pdfBytes);
 
-        // ✅ Send PDF as Response
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "Ticket_" + booking.getId() + ".pdf");

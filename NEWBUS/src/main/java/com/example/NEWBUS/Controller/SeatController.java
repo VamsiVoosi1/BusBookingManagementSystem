@@ -29,7 +29,7 @@ public class SeatController {
 
     @PostMapping("/add")
     public String addSeats(@RequestParam("busId") Long busId, @RequestParam("seatCount") int seatCount) {
-        seatService.addSeatsToBus(busId, seatCount); // ✅ This will now continue seat numbering
+        seatService.addSeatsToBus(busId, seatCount);
         return "redirect:/bus/list";
     }
     @GetMapping("/list")
